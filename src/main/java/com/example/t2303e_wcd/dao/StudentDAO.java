@@ -51,6 +51,20 @@ public class StudentDAO implements DAOInterface<Student>{
 
     @Override
     public boolean update(Student student) {
+        String sql = "UPDATE student set name=?, email=?, address=?, telephone=? WHERE id=?";
+        try{
+            Database db = Database.createInstance();
+            PreparedStatement prst = db.getPrepareStatement(sql);
+            prst.setString(1,student.getName());
+            prst.setString(2,student.getEmail());
+            prst.setString(3,student.getAddress());
+            prst.setString(4,student.getTelephone());
+            prst.setInt(5,student.getId());
+            prst.execute();
+            return true;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
         return false;
     }
 

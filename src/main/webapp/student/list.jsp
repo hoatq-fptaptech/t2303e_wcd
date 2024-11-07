@@ -16,6 +16,7 @@
 <body>
 <div class="container">
     <h1>List Student</h1>
+    <a href="create-student">Create a new student</a>
     <table class="table">
         <thead>
         <tr>
