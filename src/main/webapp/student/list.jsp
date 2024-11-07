@@ -1,4 +1,5 @@
-<%--
+<%@ page import="com.example.t2303e_wcd.entity.Student" %>
+<%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: quanghoatrinh
   Date: 05/11/2024
@@ -19,29 +20,24 @@
         <thead>
         <tr>
             <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Address</th>
+            <th scope="col">Telephone</th>
         </tr>
         </thead>
         <tbody>
+        <% for(Student s : (List<Student>)request.getAttribute("students")){ %>
         <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
+            <th scope="row"><%= s.getId() %></th>
+            <td><%= s.getName() %></td>
+            <td><%= s.getEmail() %></td>
+            <td><%= s.getAddress() %></td>
+            <td><%= s.getTelephone() %></td>
         </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-        </tr>
-        <tr>
-            <th scope="row">3</th>
-            <td colspan="2">Larry the Bird</td>
-            <td>@twitter</td>
-        </tr>
+        <% } %>
+
+
         </tbody>
     </table>
 </div>
