@@ -3,6 +3,7 @@ package com.example.t2303e_wcd.dao;
 import com.example.t2303e_wcd.database.Database;
 import com.example.t2303e_wcd.entity.Student;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,19 @@ public class StudentDAO implements DAOInterface<Student>{
 
     @Override
     public boolean create(Student student) {
+        String sql = "INSERT INTO students(name,email,address,telephone) VALUES(?,?,?,?)";
+        try{
+            Database db = Database.createInstance();
+            PreparedStatement prst = db.getPrepareStatement(sql);
+            prst.setString(1,student.getName());
+            prst.setString(2,student.getEmail());
+            prst.setString(3,student.getAddress());
+            prst.setString(4,student.getTelephone());
+            prst.execute();
+            return true;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
         return false;
     }
 
