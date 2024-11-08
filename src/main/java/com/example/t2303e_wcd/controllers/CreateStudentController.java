@@ -41,7 +41,7 @@ public class CreateStudentController extends HttpServlet {
                 req.getParameter("email"),
                 req.getParameter("address"),
                 req.getParameter("telephone"),
-                Integer.getInteger(req.getParameter("class_id"))
+                Integer.parseInt(req.getParameter("class_id"))
         );
         if(_studentDAO.create(s)){
             resp.sendRedirect("student");
