@@ -1,6 +1,8 @@
 package com.example.t2303e_wcd.controllers;
 
+import com.example.t2303e_wcd.dao.ClassDAO;
 import com.example.t2303e_wcd.dao.StudentDAO;
+import com.example.t2303e_wcd.entity.Classroom;
 import com.example.t2303e_wcd.entity.Student;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -10,18 +12,23 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet(value = "/create-student")
 public class CreateStudentController extends HttpServlet {
     private StudentDAO _studentDAO;
+    private ClassDAO _classDAO;
 
     @Override
     public void init() throws ServletException {
         _studentDAO = new StudentDAO();
+        _classDAO = new ClassDAO();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        List<Classroom> classes = _classDAO.all();
+        req.setAttribute("classes",classes);
         RequestDispatcher dispatcher = req.getRequestDispatcher("student/create.jsp");
         dispatcher.forward(req,resp);
     }
@@ -33,7 +40,8 @@ public class CreateStudentController extends HttpServlet {
                 req.getParameter("name"),
                 req.getParameter("email"),
                 req.getParameter("address"),
-                req.getParameter("telephone")
+                req.getParameter("telephone"),
+                Integer.getInteger(req.getParameter("class_id"))
         );
         if(_studentDAO.create(s)){
             resp.sendRedirect("student");

@@ -1,4 +1,5 @@
-<%--
+<%@ page import="com.example.t2303e_wcd.entity.Classroom" %>
+<%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: quanghoatrinh
   Date: 07/11/2024
@@ -31,6 +32,14 @@
             <div class="mb-3">
                 <label class="form-label">Telephone</label>
                 <input type="text" name="telephone" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Class</label>
+                <select name="class_id" class="form-control">
+                    <% for(Classroom c: (List<Classroom>)request.getAttribute("classes")){ %>
+                    <option value="<%= c.getId()%>"><%= c.getName() %></option>
+                    <% } %>
+                </select>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>

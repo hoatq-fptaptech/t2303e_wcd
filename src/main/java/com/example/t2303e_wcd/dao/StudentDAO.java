@@ -22,7 +22,8 @@ public class StudentDAO implements DAOInterface<Student>{
                         rs.getString("name"),
                         rs.getString("email"),
                         rs.getString("address"),
-                        rs.getString("telephone")
+                        rs.getString("telephone"),
+                        rs.getInt("class_id")
                 ));
             }
         }catch (Exception e){
@@ -33,7 +34,7 @@ public class StudentDAO implements DAOInterface<Student>{
 
     @Override
     public boolean create(Student student) {
-        String sql = "INSERT INTO students(name,email,address,telephone) VALUES(?,?,?,?)";
+        String sql = "INSERT INTO students(name,email,address,telephone,class_id) VALUES(?,?,?,?,?)";
         try{
             Database db = Database.createInstance();
             PreparedStatement prst = db.getPrepareStatement(sql);
@@ -41,6 +42,7 @@ public class StudentDAO implements DAOInterface<Student>{
             prst.setString(2,student.getEmail());
             prst.setString(3,student.getAddress());
             prst.setString(4,student.getTelephone());
+            prst.setInt(5,student.getClass_id());
             prst.execute();
             return true;
         }catch (Exception e){
