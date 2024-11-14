@@ -29,9 +29,9 @@ public class ClassroomService {
         if(classroom.getName().isEmpty() || classroom.getName().length() < 6){
             throw new Exception("Please input name");
         }
-        if(classroomRepository.findByName(classroom.getName()) != null){
-            throw new Exception("Name is existed.");
-        }
+//        if(classroomRepository.findByName(classroom.getName()) != null){
+//            throw new Exception("Name is existed.");
+//        }
         classroomRepository.save(classroom);
     }
 
