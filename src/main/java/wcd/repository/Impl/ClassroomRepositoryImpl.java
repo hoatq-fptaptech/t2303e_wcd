@@ -3,6 +3,7 @@ package wcd.repository.Impl;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import wcd.entity.Classroom;
 import wcd.entity.Student;
 import wcd.repository.ClassroomRepository;
@@ -76,9 +77,9 @@ public class ClassroomRepositoryImpl implements ClassroomRepository {
     @Override
     public List<Classroom> findByName(String name) {
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
-            return session.createQuery("from Classroom where name like %:name%", Classroom.class)
-                    .setParameter("name",name)
-                    .list();
+            Query<Classroom> query =  session.createQuery("from Classroom c where c.name LIKE :name", Classroom.class);
+            query.setParameter("name",'%'+name+'%');
+            return query.list();
         }
     }
 }

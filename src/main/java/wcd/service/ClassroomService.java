@@ -25,7 +25,28 @@ public class ClassroomService {
         return classroom;
     }
 
-    public void saveClassroom(Classroom classroom){
+    public void saveClassroom(Classroom classroom) throws Exception{
+        if(classroom.getName().isEmpty() || classroom.getName().length() < 6){
+            throw new Exception("Please input name");
+        }
+        if(classroomRepository.findByName(classroom.getName()) != null){
+            throw new Exception("Name is existed.");
+        }
         classroomRepository.save(classroom);
+    }
+
+    public void updateClassroom(Classroom classroom) throws Exception{
+        if(classroom.getName().isEmpty() || classroom.getName().length() < 6){
+            throw new Exception("Please input name");
+        }
+        classroomRepository.update(classroom);
+    }
+
+    public void deleteClassroom(int id){
+        classroomRepository.delete(id);
+    }
+
+    public List<Classroom> searchClassroom(String search){
+        return classroomRepository.findByName(search);
     }
 }

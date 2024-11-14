@@ -5,41 +5,61 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import wcd.entity.Classroom;
+import wcd.service.ClassroomService;
 
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(value = "/list-class")
+@WebServlet(value = "/classes")
 public class ClassController extends HttpServlet {
-    private SessionFactory _sessionFactory;
-
+    private ClassroomService classroomService;
     @Override
     public void init() throws ServletException {
         super.init();
-        try{
-            _sessionFactory = new Configuration()
-                    .configure("hibernate.cfg.xml")
-                    .buildSessionFactory();
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-        }
+        classroomService = new ClassroomService();
     }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try(Session session = _sessionFactory.openSession()){
-            session.beginTransaction();
-            List<Classroom> list = session.createQuery("SELECT DISTINCT c FROM Classroom c LEFT JOIN FETCH c.students",Classroom.class)
-                    .getResultList(); // jSQL
-            req.setAttribute("classes",list);
-            session.getTransaction().commit();
-            req.getRequestDispatcher("classroom/list.jsp").forward(req,resp);
-            return;
+            String action = req.getParameter("action");
+            if(action == null || action.isEmpty()) action = "list";
+            switch (action){
+                case "new": formNewClassroom(req,resp); break;
+                case "edit": break;
+                case "list": showListClasses(req,resp); break;
+
+            }
+    }
+
+    private void showListClasses(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        List<Classroom> list = classroomService.getAllClasses();
+        req.setAttribute("classes",list);
+        req.getRequestDispatcher("classroom/list.jsp").forward(req,resp);
+    }
+
+    private void formNewClassroom(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+        req.getRequestDispatcher("classroom/new.jsp").forward(req,resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getParameter("action");
+        switch (action){
+            case "insert":insertClassroom(req,resp); break;
+            case "update": break;
         }
     }
 
+    private void insertClassroom(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            String name = req.getParameter("name");
+            Classroom classroom = new Classroom();
+            classroom.setName(name);
+            classroomService.saveClassroom(classroom);
+            resp.sendRedirect("classes?action=list");
+        }catch (Exception e){
+            formNewClassroom(req,resp);
+        }
 
+    }
 }

@@ -17,13 +17,12 @@
 <body>
 <div class="container">
     <h1>List Class</h1>
-    <a href="create-class">Create a new class</a>
+    <a href="?action=new">Create a new class</a>
     <table class="table">
         <thead>
         <tr>
             <th scope="col">#</th>
             <th scope="col">Name</th>
-            <th scope="col">Student number</th>
         </tr>
         </thead>
         <tbody>
@@ -31,11 +30,6 @@
         <tr>
             <th scope="row"><%= c.getId() %></th>
             <td><%= c.getName() %></td>
-            <td>
-                <% for(Student s: c.getStudents()){ %>
-                <p><%= s.getName() %></p>
-                <% } %>
-            </td>
         </tr>
         <% } %>
 
