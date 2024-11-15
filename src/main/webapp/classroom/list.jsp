@@ -23,6 +23,8 @@
         <tr>
             <th scope="col">#</th>
             <th scope="col">Name</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
@@ -30,10 +32,15 @@
         <tr>
             <th scope="row"><%= c.getId() %></th>
             <td><%= c.getName() %></td>
+            <td><a href="?action=edit&id=<%= c.getId() %>">Edit</a></td>
+            <td>
+                <form action="?action=delete" method="post">
+                    <input type="hidden" value="<%=c.getId()%>" name="id"/>
+                    <button onclick="return confirm('Are you sure delete class <%= c.getName()%>')" type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </td>
         </tr>
         <% } %>
-
-
         </tbody>
     </table>
 </div>

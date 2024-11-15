@@ -39,6 +39,7 @@ public class ClassroomService {
         if(classroom.getName().isEmpty() || classroom.getName().length() < 6){
             throw new Exception("Please input name");
         }
+        System.out.println(classroom.getName());
         classroomRepository.update(classroom);
     }
 
